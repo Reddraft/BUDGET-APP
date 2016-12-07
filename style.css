@@ -32,7 +32,7 @@ body {
 **********************************************/
 
 .top {
-  height: 40vh;
+  height: 48vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(back.png);
   background-size: cover;
   background-position: center;
@@ -84,7 +84,7 @@ body {
   float: left;
   font-size: 13px;
   color: #444;
-  margin-top: 20px;
+  margin-top: 2px;
 }
 
 .budget__income--value,
