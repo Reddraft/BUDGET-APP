@@ -19,7 +19,7 @@ var budgetController = (function() {
       this.value = value;
   };
 
-  // RETRIEVE DATA OBJECT
+  // RETRIEVE DATA STRUCTURE OBJECT
   var data = {
     allItems: {
       exp: [],
@@ -29,7 +29,42 @@ var budgetController = (function() {
       exp: 0,
       inc: 0
     }
-  }
+  };
+
+  //---RETURN BUDGETCONTROLLER OBJECT
+  return {
+
+    //addInput() returns an object that can be access by budgetController.addItem()
+    addItem: function(type, des, val) {
+
+      var newItem, ID;
+
+      //---Create new ID
+      //check if there are items in the array
+      // if exp or inc arrays are not empty add 1 to the id
+      //exp: [] or inc: []
+      if (data.allItems[type].length > 0) {
+        ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
+        // if exp or inc arrays are empty initialize with id = 0
+        //exp: [{id: 0}] or inc: [{id: 0}]
+      } else {
+        ID = 0;
+      }
+
+      //create new item basedon 'inc' or 'exp'
+      if (type === 'exp') {
+        newItem = new Expense(ID, des, val);
+      } else if (type === 'inc'){
+        newItem = new Income(ID, des, val);
+      }
+
+      //push item into data structure
+      data.allItems[type].push(newItem);
+      // return new item
+      return newItem;
+    }
+
+  };
 
 })();
 
@@ -46,14 +81,14 @@ var uiController = (function() {
     inputDescription: '.add__description',
     inputValue: '.add__value',
     inputBtn: '.add__btn'
-  }
+  };
 
   //---RETURN UICONTROLLER OBJECT
   return {
       //getInput() returns an object with type.value description.value value.value as properties
       getInput: function() {
         return {
-          type: document.querySelector(domStrings.inputType).value,// get value="income" or value="expense" from html
+          type: document.querySelector(domStrings.inputType).value,// get value="inc" or value="exp" from html
           description: document.querySelector(domStrings.inputDescription).value,
           value: document.querySelector(domStrings.inputValue).valueAsNumber
         };
@@ -76,11 +111,12 @@ var controller = (function(budgetCtrl, UICtrl) {
 
   //----ADD ITEM FUNCTION
   var ctrlAddItem = function() {
-
+    
+    var input, newItem;
     // 1. get the field input data from the uiController
-    var input = UICtrl.getInput();
+    input = UICtrl.getInput();
     // 2. add item to the budget controller
-
+    newItem = budgetCtrl.addItem(input.type, input.description, input.value);
     // 3. add the item to the user interface
 
     // 4. calculate the budget
@@ -91,6 +127,7 @@ var controller = (function(budgetCtrl, UICtrl) {
 
   // ---- SETUP EVENT LISTENERS FUNCTION
   var setupEventListeners = function() {
+
 
     //call UICtrl.getDOMstrings() to access DOM elements from the uiController
     var DOM = UICtrl.getDOMstrings();
