@@ -5,20 +5,43 @@
 
 var budgetController = (function() {
 
-  // Some Code
+  // EXPENSE FUNCTION CONSTRUCTOR
+  var Expense = function(id, description, value) {
+      this.id = id;
+      this.description = description;
+      this.value = value;
+  };
+
+  // INCOME FUNCTION CONSTRUCTOR
+  var Income = function(id, description, value) {
+      this.id = id;
+      this.description = description;
+      this.value = value;
+  };
+
+  // RETRIEVE DATA OBJECT
+  var data = {
+    allItems: {
+      exp: [],
+      inc: []
+    },
+    totals: {
+      exp: 0,
+      inc: 0
+    }
+  }
 
 })();
-
 
 
 /**********************************************
 *** UI CONTROLLER
 **********************************************/
 
-var UIController = (function() {
+var uiController = (function() {
 
   // DOM ELEMENTS OBJECT VARIABLE
-  var DOMstrings = {
+  var domStrings = {
     inputType: '.add__type',
     inputDescription: '.add__description',
     inputValue: '.add__value',
@@ -30,14 +53,14 @@ var UIController = (function() {
       //getInput() returns an object with type.value description.value value.value as properties
       getInput: function() {
         return {
-          type: document.querySelector(DOMstrings.inputType).value,// get value="income" or value="expense" from html
-          description: document.querySelector(DOMstrings.inputDescription).value,
-          value: document.querySelector(DOMstrings.inputValue).valueAsNumber
+          type: document.querySelector(domStrings.inputType).value,// get value="income" or value="expense" from html
+          description: document.querySelector(domStrings.inputDescription).value,
+          value: document.querySelector(domStrings.inputValue).valueAsNumber
         };
       },
       //getDOMstrings() returns the DOMstrings object variable
       getDOMstrings: function() {
-        return DOMstrings;
+        return domStrings;
       }
 
   }
@@ -51,10 +74,25 @@ var UIController = (function() {
 
 var controller = (function(budgetCtrl, UICtrl) {
 
+  //----ADD ITEM FUNCTION
+  var ctrlAddItem = function() {
+
+    // 1. get the field input data from the uiController
+    var input = UICtrl.getInput();
+    // 2. add item to the budget controller
+
+    // 3. add the item to the user interface
+
+    // 4. calculate the budget
+
+    // 5. Display the budget in the UI
+
+  };
+
   // ---- SETUP EVENT LISTENERS FUNCTION
   var setupEventListeners = function() {
 
-    //call UICtrl.getDOMstrings() to access DOM elements from the UIController
+    //call UICtrl.getDOMstrings() to access DOM elements from the uiController
     var DOM = UICtrl.getDOMstrings();
 
     //execute ctrlAddItem() when click DOM.inputBtn
@@ -68,22 +106,6 @@ var controller = (function(budgetCtrl, UICtrl) {
     });
   };
 
-
-  //----ADD ITEM FUNCTION
-  var ctrlAddItem = function() {
-
-    // 1. get the field input data from the UIController
-    var input = UICtrl.getInput();
-    // 2. add item to the budget controller
-
-    // 3. add the item to the user interface
-
-    // 4. calculate the budget
-
-    // 5. Display the budget in the UI
-
-  };
-
   //--- RETURN CONTROLLER OBJECT
   return {
     init: function() {
@@ -91,7 +113,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     }
   }
 
-})(budgetController, UIController);
+})(budgetController, uiController);
 
 /**********************************************
 *** INITIALIZATION
