@@ -51,7 +51,7 @@ var budgetController = (function() {
         ID = 0;
       }
 
-      //create new item basedon 'inc' or 'exp'
+      //create new item based on 'inc' or 'exp'
       if (type === 'exp') {
         newItem = new Expense(ID, des, val);
       } else if (type === 'inc'){
@@ -80,7 +80,9 @@ var uiController = (function() {
     inputType: '.add__type',
     inputDescription: '.add__description',
     inputValue: '.add__value',
-    inputBtn: '.add__btn'
+    inputBtn: '.add__btn',
+    incomeContainer: '.income__list',
+    expensesContainer: '.expenses__list'
   };
 
   //---RETURN UICONTROLLER OBJECT
@@ -93,6 +95,52 @@ var uiController = (function() {
           value: document.querySelector(domStrings.inputValue).valueAsNumber
         };
       },
+
+      addListItem: function(obj, type, element) {
+
+        var html, newHtml;
+        //check if its an exp or inc then create HTML string with placeholder text
+        if (type === 'inc') {
+          //select the income list
+          element = domStrings.incomeContainer;
+          //income html
+          html =
+          '<div class="item clearfix" id="income-%id%">' +
+            '<div class="item__description">%description%</div>' +
+            '<div class="right clearfix">' +
+              '<div class="item__value">%value%</div>' +
+              '<div class="item__delete">' +
+                '<button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        } else if (type === 'exp') {
+          //select the income list
+          element = domStrings.expensesContainer;
+          //Expense html
+          html =
+          '<div class="item clearfix" id="expense-%id%">' +
+            '<div class="item__description">%description%</div>' +
+            '<div class="right clearfix">' +
+                '<div class="item__value">%value%</div>' +
+                '<div class="item__percentage">21%</div>' +
+                '<div class="item__delete">' +
+                    '<button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>' +
+                '</div>' +
+            '</div>' +
+          '</div>';
+        }
+
+        //Replace the placeholder text with actual data
+        newHtml = html.replace('%id%', obj.id);
+        newHtml = newHtml.replace('%description%', obj.description);
+        newHtml = newHtml.replace('%value%', obj.value);
+
+        //Insert the HTML into the DOM
+        document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+
+      },
+
       //getDOMstrings() returns the DOMstrings object variable
       getDOMstrings: function() {
         return domStrings;
@@ -111,14 +159,14 @@ var controller = (function(budgetCtrl, UICtrl) {
 
   //----ADD ITEM FUNCTION
   var ctrlAddItem = function() {
-    
+
     var input, newItem;
     // 1. get the field input data from the uiController
     input = UICtrl.getInput();
     // 2. add item to the budget controller
     newItem = budgetCtrl.addItem(input.type, input.description, input.value);
     // 3. add the item to the user interface
-
+    uiController.addListItem(newItem, input.type);
     // 4. calculate the budget
 
     // 5. Display the budget in the UI
