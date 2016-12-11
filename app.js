@@ -34,7 +34,7 @@ var budgetController = (function() {
   //---RETURN BUDGETCONTROLLER OBJECT
   return {
 
-    //addInput() returns an object that can be access by budgetController.addItem()
+    //---addInput() returns an object that can be access by budgetController.addItem()
     addItem: function(type, des, val) {
 
       var newItem, ID;
@@ -87,7 +87,8 @@ var uiController = (function() {
 
   //---RETURN UICONTROLLER OBJECT
   return {
-      //getInput() returns an object with type.value description.value value.value as properties
+
+      //---getInput() returns an object with type.value description.value value.value as properties
       getInput: function() {
         return {
           type: document.querySelector(domStrings.inputType).value,// get value="inc" or value="exp" from html
@@ -96,6 +97,7 @@ var uiController = (function() {
         };
       },
 
+      //---addListItem() creates an HTML string of an item based on its type then add it into the DOM
       addListItem: function(obj, type, element) {
 
         var html, newHtml;
@@ -141,7 +143,22 @@ var uiController = (function() {
 
       },
 
-      //getDOMstrings() returns the DOMstrings object variable
+      //---clearFields() clear the inputs in the form
+      clearFields: function() {
+        var fields, fieldsArr;
+        //select description and value fields
+        fields = document.querySelectorAll(domStrings.inputDescription + ', '+  domStrings.inputValue);
+        // convert it in an actual array
+        fieldsArr = Array.prototype.slice.call(fields);
+        //loop throug the array and ampty each field
+        fieldsArr.forEach(function(field) {
+            field.value = "";
+        });
+        //Make the first input selected
+        fieldsArr[0].focus();
+      },
+
+      //---getDOMstrings() returns the DOMstrings object variable
       getDOMstrings: function() {
         return domStrings;
       }
@@ -157,7 +174,7 @@ var uiController = (function() {
 
 var controller = (function(budgetCtrl, UICtrl) {
 
-  //----ADD ITEM FUNCTION
+  //---ADD ITEM FUNCTION
   var ctrlAddItem = function() {
 
     var input, newItem;
@@ -165,8 +182,9 @@ var controller = (function(budgetCtrl, UICtrl) {
     input = UICtrl.getInput();
     // 2. add item to the budget controller
     newItem = budgetCtrl.addItem(input.type, input.description, input.value);
-    // 3. add the item to the user interface
+    // 3. add the item to the user interface and then  clear the input fields
     uiController.addListItem(newItem, input.type);
+    uiController.clearFields();
     // 4. calculate the budget
 
     // 5. Display the budget in the UI
