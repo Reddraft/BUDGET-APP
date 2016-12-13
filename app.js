@@ -131,7 +131,8 @@ var uiController = (function() {
     budgetLabel: '.budget__value',
     incomeLabel: '.budget__income--value',
     expenseLabel: '.budget__expenses--value',
-    percentageLabel: '.budget__expenses--percentage'
+    percentageLabel: '.budget__expenses--percentage',
+    container: '.container'
   };
 
   //---RETURN UICONTROLLER OBJECT
@@ -156,7 +157,7 @@ var uiController = (function() {
           element = domStrings.incomeContainer;
           //income html
           html =
-          '<div class="item clearfix" id="income-%id%">' +
+          '<div class="item clearfix" id="inc-%id%">' +
             '<div class="item__description">%description%</div>' +
             '<div class="right clearfix">' +
               '<div class="item__value">%value%</div>' +
@@ -170,7 +171,7 @@ var uiController = (function() {
           element = domStrings.expensesContainer;
           //Expense html
           html =
-          '<div class="item clearfix" id="expense-%id%">' +
+          '<div class="item clearfix" id="exp-%id%">' +
             '<div class="item__description">%description%</div>' +
             '<div class="right clearfix">' +
                 '<div class="item__value">%value%</div>' +
@@ -268,6 +269,29 @@ var controller = (function(budgetCtrl, UICtrl) {
 
   };
 
+  //---DELETE ITEM FUNCTION
+  var ctrlDeleteItem = function(event) {
+    var itemID, splitID, type, ID;
+
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+    if (itemID) {
+      // id before split ---> exp-1 || and after split ---> ['exp', '1']
+      splitID = itemID.split('-');
+      //type = exp
+      type = splitID[0];
+      //ID = 1
+      ID = splitID[1];
+
+      // 1. delete item from data STRUCTURE
+
+      // 2. delete item from the UI
+
+      // 3. update and show the new budget
+
+    }
+  }
+
   // ---- SETUP EVENT LISTENERS FUNCTION
   var setupEventListeners = function() {
 
@@ -283,6 +307,9 @@ var controller = (function(budgetCtrl, UICtrl) {
           ctrlAddItem();
       }
     });
+
+    document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+
   };
 
   //--- RETURN CONTROLLER OBJECT
