@@ -16,6 +16,21 @@ var budgetController = (function() {
       this.id = id;
       this.description = description;
       this.value = value;
+      this.percentage = -1;
+  };
+
+  //Add calcPercentage Method to the expense prototype
+  Expense.prototype.calcPercentage = function(totalIncome) {
+      if (totalIncome > 0) {
+        this.percentage = Math.round( (this.value / totalIncome) * 100);
+      } else {
+        this.percentage =  -1;
+      }
+  };
+
+  //Add getPercentage Method to the expense prototype
+  Expense.prototype.getPercentage = function() {
+    return this.percentage;
   };
 
 
@@ -125,6 +140,25 @@ var budgetController = (function() {
       }
 
     },
+
+    //---calculatePercentages()
+    calculatePercentages: function() {
+      //call the calcPercentage() method on each item in the exp array
+      data.allItems.exp.forEach(function(item) {
+          item.calcPercentage(data.totals.inc);
+      });
+
+    },
+
+    //--- getPercentages()
+    getPercentages: function() {
+      //call the getPercentage() method on each item in the exp array
+      allPerc = data.allItems.exp.map(function(item) {
+          return item.getPercentage();
+      });
+      return allPerc;
+    },
+
     //---getBudget() returns an object with ev
     getBudget: function() {
       return {
@@ -134,7 +168,7 @@ var budgetController = (function() {
         percentage: data.percentage
       };
     },
-    
+
     //---Test data on the console
     testing: function() {
       console.log(data);
