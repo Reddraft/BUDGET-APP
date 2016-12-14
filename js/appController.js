@@ -50,12 +50,12 @@ var controller = (function(budgetCtrl, UICtrl) {
       type = splitID[0];
       //ID = 1
       ID = parseInt(splitID[1]);
-      // 1. delete item from data STRUCTURE
+      // 1. delete item from data structure
       budgetCtrl.deleteItem(type, ID);
       // 2. delete item from the UI
-
+      UICtrl.deleteListItem(itemID);
       // 3. update and show the new budget
-
+      updateBudget();
     }
   };
 

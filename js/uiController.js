@@ -77,6 +77,15 @@ var uiController = (function() {
 
       },
 
+      //---deleteItem() remove de element from the UI
+      deleteListItem: function(selectorID) {
+        //selects the item in the list by the ID
+        var el = document.getElementById(selectorID)
+        //select the parent element then remove the parent child (The element)
+        el.parentNode.removeChild(el);
+
+      },
+
       //---clearFields() clear the inputs in the form
       clearFields: function() {
         var fields, fieldsArr;
