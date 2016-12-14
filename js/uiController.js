@@ -16,7 +16,8 @@ var uiController = (function() {
     incomeLabel: '.budget__income--value',
     expenseLabel: '.budget__expenses--value',
     percentageLabel: '.budget__expenses--percentage',
-    container: '.container'
+    container: '.container',
+    expensesPercLabel: '.item__percentage'
   };
 
   //---RETURN UICONTROLLER OBJECT
@@ -104,10 +105,10 @@ var uiController = (function() {
 
         //Make the first input selected
         fieldsArr[0].focus();
-        
+
       },
 
-
+      //---displayBudget()
       displayBudget: function(obj) {
 
         document.querySelector(domStrings.budgetLabel).textContent = obj.budget;
@@ -119,6 +120,27 @@ var uiController = (function() {
         } else {
           document.querySelector(domStrings.percentageLabel).textContent = '---';
         }
+
+      },
+
+
+      displayPercentages: function(percentages) {
+        var fields = document.querySelectorAll(domStrings.expensesPercLabel);
+
+        var nodeListForEach = function(list, callback) {
+          for (var i = 0; i < list.length; i++) {
+            callback(list[i], i);
+          }
+        };
+
+        nodeListForEach(fields, function(item, index) {
+          if (percentages[index] > 0) {
+            item.textContent = percentages[index] + '%';
+          } else {
+            item.textContent = '---';
+          }
+
+        });
 
       },
 
