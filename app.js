@@ -80,6 +80,29 @@ var budgetController = (function() {
       return newItem;
     },
 
+    //---deleteItem()
+    deleteItem: function(type, id) {
+      var ids, index;
+
+      // ids = [1, 3, 5, 8, 9]
+      // loop through inc or exp array and return the ids of the items then store them in the ids array
+      ids = data.allItems[type].map(function(item) {
+          return item.id;
+      });
+      // ids = [1, 3, 5, 8, 9]
+      // index = ids.indexOf(8); --> return 3
+      //index = 3
+      // check whats the index of the id passed as parameter if its found then store it in a variable
+      index = ids.indexOf(id);
+
+      //if index exists deleted from array
+      if (index !== -1) {
+        //example above remove index 3 from either inc or exp array
+        data.allItems[type].splice(index, 1);
+      }
+
+    },
+
     //---calculateBudget() calculate based on icomes and expnses what's tha final budget
     calculateBudget: function() {
       //calculate total income and expenses
@@ -200,7 +223,7 @@ var uiController = (function() {
         fields = document.querySelectorAll(domStrings.inputDescription + ', '+  domStrings.inputValue);
         // convert it in an actual array
         fieldsArr = Array.prototype.slice.call(fields);
-        //loop throug the array and ampty each field
+        //loop through the array and ampty each field
         fieldsArr.forEach(function(field) {
             field.value = "";
         });
@@ -273,24 +296,25 @@ var controller = (function(budgetCtrl, UICtrl) {
   var ctrlDeleteItem = function(event) {
     var itemID, splitID, type, ID;
 
+    //capture the target element that was click inside container then traverse the DOM to get the 4th parent id
     itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-    if (itemID) {
-      // id before split ---> exp-1 || and after split ---> ['exp', '1']
+    // check if the element that was clicked was the delete button icon
+    if (event.target.className === "ion-ios-close-outline" ) {
+      // if delete button icon was clicked then id before split ---> exp-1 || and after split ---> ['exp', '1']
       splitID = itemID.split('-');
       //type = exp
       type = splitID[0];
       //ID = 1
-      ID = splitID[1];
-
+      ID = parseInt(splitID[1]);
       // 1. delete item from data STRUCTURE
-
+      budgetCtrl.deleteItem(type, ID);
       // 2. delete item from the UI
 
       // 3. update and show the new budget
 
     }
-  }
+  };
 
   // ---- SETUP EVENT LISTENERS FUNCTION
   var setupEventListeners = function() {
@@ -308,6 +332,7 @@ var controller = (function(budgetCtrl, UICtrl) {
       }
     });
 
+    //execute ctrlDeleteItem() when click on the Container element
     document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
 
   };
@@ -315,6 +340,7 @@ var controller = (function(budgetCtrl, UICtrl) {
   //--- RETURN CONTROLLER OBJECT
   return {
     init: function() {
+        console.log('Application is running');
         //call uiController.displayBudget
         UICtrl.displayBudget({
           budget: 0,
