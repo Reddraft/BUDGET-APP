@@ -7,23 +7,34 @@ var controller = (function(budgetCtrl, UICtrl) {
 
   //---UPDATE BUDGET FUNCTION
   var updateBudget = function() {
+
     // 1. calculate the budget
     budgetCtrl.calculateBudget();
     // 2. return the budget
     var budget = budgetCtrl.getBudget();
     // 3. Display the budget in the UI
     UICtrl.displayBudget(budget);
-  }
+
+  };
+
+  var updatePercentages = function() {
+
+    // 1. calculate the percentages
+    // 2. read percentages from the budget controller
+    // 3. update the UI with new percentages
+
+  };
 
   //---ADD ITEM FUNCTION
   var ctrlAddItem = function() {
-
     var input, newItem;
+
     // 1. call UICtrl.getInput() to get the field input data from the uiController
     input = UICtrl.getInput();
+
     //if there's a description, the value is a number and the value is not 0. Execute the rest of the steps
     if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
-     // 2. call budgetCtrl.additem() to add an item to the budget controller
+      // 2. call budgetCtrl.additem() to add an item to the budget controller
       newItem = budgetCtrl.addItem(input.type, input.description, input.value);
       // 3. call uiController.addListItem() to add the item to the user interface
       UICtrl.addListItem(newItem, input.type);
@@ -31,6 +42,9 @@ var controller = (function(budgetCtrl, UICtrl) {
       UICtrl.clearFields();
       //5 Calculate and update the budget
       updateBudget();
+      //6 calculate and update percentages
+      updatePercentages();
+
     }
 
   };
@@ -56,7 +70,10 @@ var controller = (function(budgetCtrl, UICtrl) {
       UICtrl.deleteListItem(itemID);
       // 3. update and show the new budget
       updateBudget();
+      //4 calculate and update percentages
+      updatePercentages();
     }
+
   };
 
   // ---- SETUP EVENT LISTENERS FUNCTION
@@ -82,8 +99,11 @@ var controller = (function(budgetCtrl, UICtrl) {
 
   //--- RETURN CONTROLLER OBJECT
   return {
+
     init: function() {
+
         console.log('Application is running');
+
         //call uiController.displayBudget
         UICtrl.displayBudget({
           budget: 0,
@@ -91,8 +111,10 @@ var controller = (function(budgetCtrl, UICtrl) {
           totalExp: 0,
           percentage: -1
         });
+
         //call setupEventListeners
         setupEventListeners();
+
     }
   }
 

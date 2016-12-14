@@ -33,8 +33,8 @@ var uiController = (function() {
 
       //---addListItem() creates an HTML string of an item based on its type then add it into the DOM
       addListItem: function(obj, type) {
-
         var html, newHtml, element;
+
         //check if its an exp or inc then create HTML string with placeholder text
         if (type === 'inc') {
           //select the income list
@@ -79,6 +79,7 @@ var uiController = (function() {
 
       //---deleteItem() remove de element from the UI
       deleteListItem: function(selectorID) {
+
         //selects the item in the list by the ID
         var el = document.getElementById(selectorID)
         //select the parent element then remove the parent child (The element)
@@ -89,16 +90,21 @@ var uiController = (function() {
       //---clearFields() clear the inputs in the form
       clearFields: function() {
         var fields, fieldsArr;
+
         //select description and value fields
         fields = document.querySelectorAll(domStrings.inputDescription + ', '+  domStrings.inputValue);
+
         // convert it in an actual array
         fieldsArr = Array.prototype.slice.call(fields);
+
         //loop through the array and ampty each field
         fieldsArr.forEach(function(field) {
             field.value = "";
         });
+
         //Make the first input selected
         fieldsArr[0].focus();
+        
       },
 
 

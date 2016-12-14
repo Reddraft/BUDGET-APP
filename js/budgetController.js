@@ -35,14 +35,18 @@ var budgetController = (function() {
 
   // CALCULATE TOTAL FUNCTION
   var calculateTotal = function(type) {
+
     //initialize sum with 0
     var sum = 0;
+
     //depending on the type loop through all items in the array then sum all its values
     data.allItems[type].forEach(function(item) {
       sum += item.value;
     });
+
     // set the total of the sum of all items value in the array
     data.totals[type] = sum;
+
   };
 
 
@@ -51,7 +55,6 @@ var budgetController = (function() {
 
     //---addInput() returns an object that can be access by budgetController.addItem()
     addItem: function(type, des, val) {
-
       var newItem, ID;
 
       //---Create new ID
@@ -75,8 +78,10 @@ var budgetController = (function() {
 
       //push item into data structure
       data.allItems[type].push(newItem);
+
       // return new item
       return newItem;
+
     },
 
     //---deleteItem()
@@ -104,11 +109,14 @@ var budgetController = (function() {
 
     //---calculateBudget() calculate based on icomes and expnses what's tha final budget
     calculateBudget: function() {
+
       //calculate total income and expenses
       calculateTotal('exp');
       calculateTotal('inc');
+
       //calculate the budget: income - expenses
       data.budget = data.totals.inc - data.totals.exp;
+
       //calculte the percentage of income that was spent
       if (data.totals.inc > 0) {
         data.percentage = Math.round( (data.totals.exp / data.totals.inc) * 100 );
@@ -126,6 +134,7 @@ var budgetController = (function() {
         percentage: data.percentage
       };
     },
+    
     //---Test data on the console
     testing: function() {
       console.log(data);
